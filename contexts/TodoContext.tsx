@@ -23,9 +23,9 @@ export interface Task {
   completed: boolean;
   tag: Tag;
   groupId: string;
-  points: number;
-  time: number;
-  date: string;
+  date: string;    // ISO 格式的时间戳
+  time: number;    // 预计时间（分钟）
+  points: number;  // 任务积分
 }
 
 interface TodoContextType {
@@ -33,7 +33,7 @@ interface TodoContextType {
   tags: Tag[];
   groups: TaskGroup[];
   selectedGroupId: string;
-  addTask: (title: string, tag: Tag) => void;
+  addTask: (task: Task) => void;
   toggleTask: (id: string) => void;
   deleteTask: (id: string) => void;
   addTag: (name: string, color: string) => void;
@@ -48,7 +48,7 @@ interface TodoContextType {
 const defaultTags: Tag[] = [
   { id: '1', name: '开发', color: 'bg-[#5252FF]' },
   { id: '2', name: '会议', color: 'bg-[#FF7452]' },
-  { id: '3', name: '休息', color: 'bg-[green]' },
+  { id: '3', name: '休息', color: 'bg-[#00C781]' },
 ];
 
 const defaultGroups: TaskGroup[] = [
@@ -117,18 +117,11 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem(LOCAL_STORAGE_KEYS.SELECTED_GROUP, selectedGroupId);
   }, [selectedGroupId]);
 
-  const addTask = (title: string, tag: Tag) => {
-    const newTask: Task = {
-      id: Math.random().toString(36).substr(2, 9),
-      title,
-      completed: false,
-      tag,
-      groupId: selectedGroupId, 
-      points: 4,
-      time: 12,
-      date: format(new Date(), 'dd MMM yyyy', { locale: zhCN })
-    };
-    setTasks(prevTasks => [...prevTasks, newTask]);
+  const addTask = (task: Task) => {
+    setTasks(prevTasks => [...prevTasks, task]);
+    // 保存到本地存储
+    const updatedTasks = [...tasks, task];
+    localStorage.setItem('todo-tasks', JSON.stringify(updatedTasks));
   };
 
   const toggleTask = (id: string) => {

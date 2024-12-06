@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { useTodo } from '@/contexts/TodoContext';
 import NewTaskDialog from './NewTaskDialog';
 import BoardView from './BoardView';
+import TimelineView from './TimelineView';
 
 const TodoList = () => {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
@@ -112,11 +113,7 @@ const TodoList = () => {
 
       {currentView === 'board' && <BoardView />}
 
-      {currentView === 'timeline' && (
-        <div className="flex items-center justify-center h-[400px] text-gray-400">
-          时间线视图开发中...
-        </div>
-      )}
+      {currentView === 'timeline' && <TimelineView />}
 
       {currentView === 'calendar' && (
         <div className="flex items-center justify-center h-[400px] text-gray-400">
@@ -124,7 +121,7 @@ const TodoList = () => {
         </div>
       )}
 
-      <NewTaskDialog open={isNewTaskOpen} onOpenChange={setIsNewTaskOpen} />
+      <NewTaskDialog initialGroupId={selectedGroupId} open={isNewTaskOpen} onOpenChange={setIsNewTaskOpen} />
     </div>
   );
 };

@@ -26,6 +26,8 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({
   const [showNewTag, setShowNewTag] = useState(false);
   const [newTagName, setNewTagName] = useState('');
   const [newTagColor, setNewTagColor] = useState('bg-[#5252FF]');
+  const [time, setTime] = useState('30'); // 预计时间（分钟）
+  const [points, setPoints] = useState('1'); // 任务积分
 
   // 当tags改变时，如果没有选中的标签且有可用标签，选择第一个标签
   useEffect(() => {
@@ -42,11 +44,30 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() && selectedTag) {
-      addTask(title, selectedTag, selectedGroup);
-      setTitle('');
-      onOpenChange(false);
-    }
+    // console.log(title, selectedTag, selectedGroup, '看看-', initialGroupId, groups[0]?.id);
+    if (!title || !selectedTag || !selectedGroup) return;
+
+    // const selectedTagObj = tags.find(t => t.id === selectedTag);
+    // console.log(selectedTagObj, '看看selectedTagObj', tags, selectedTag);
+    if (!selectedTag) return;
+
+    addTask({
+      id: Date.now().toString(),
+      title,
+      completed: false,
+      tag: selectedTag,  
+      groupId: selectedGroup,
+      date: new Date().toISOString(),
+      time: parseInt(time) || 30,
+      points: parseInt(points) || 1
+    });
+
+    setTitle('');
+    setSelectedTag('');
+    setSelectedGroup('');
+    setTime('30');
+    setPoints('1');
+    onOpenChange(false);
   };
 
   const handleAddTag = () => {
@@ -131,6 +152,29 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium mb-1">预计时间（分钟）</label>
+                <input
+                  type="number"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  min="1"
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium mb-1">任务积分</label>
+                <input
+                  type="number"
+                  value={points}
+                  onChange={(e) => setPoints(e.target.value)}
+                  min="1"
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
             </div>
 
             {showNewTag && (
