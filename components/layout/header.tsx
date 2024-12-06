@@ -1,11 +1,11 @@
 "use client";
 
 import React from 'react';
-import { ChevronLeft, ChevronRight, Home, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { useLocale } from '@/contexts/LocaleContext';
 
 const Header = () => {
-  const { locale, setLocale, t } = useLocale();
+  const { locale, setLocale } = useLocale();
 
   const toggleLocale = () => {
     setLocale(locale === 'zh' ? 'en' : 'zh');
@@ -14,15 +14,6 @@ const Header = () => {
   return (
     <div className="flex justify-between items-center w-full px-4">
       <div className="flex items-center space-x-2">
-        {/* <button className="p-1 hover:bg-gray-100 rounded">
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button className="p-1 hover:bg-gray-100 rounded">
-          <ChevronRight className="w-5 h-5" />
-        </button>
-        <button className="p-1 hover:bg-gray-100 rounded">
-          <Home className="w-5 h-5" />
-        </button> */}
       </div>
       <div className="ml-4 flex-1">
         <div className="max-w-2xl">

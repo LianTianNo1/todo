@@ -14,7 +14,7 @@ interface NewTaskDialogProps {
 
 const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ open, onOpenChange }) => {
   const [title, setTitle] = useState('');
-  const { tags, addTask, addTag, selectedGroup } = useTodo();
+  const { tags, addTask, addTag } = useTodo();
   const { t } = useLocale();
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
   const [showNewTag, setShowNewTag] = useState(false);
@@ -31,7 +31,7 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ open, onOpenChange }) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim() && selectedTag) {
-      addTask(title, selectedTag, selectedGroup);
+      addTask(title, selectedTag);
       setTitle('');
       onOpenChange(false);
     }

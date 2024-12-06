@@ -6,19 +6,19 @@ import { format } from 'date-fns';
 import { useTodo } from '@/contexts/TodoContext';
 import NewTaskDialog from './NewTaskDialog';
 
-interface Task {
-  id: string;
-  title: string;
-  completed: boolean;
-  tag: {
-    name: string;
-    color: string;
-  };
-  points: number;
-  time: number;
-  date: string;
-  groupId?: string;
-}
+// interface Task {
+//   id: string;
+//   title: string;
+//   completed: boolean;
+//   tag: {
+//     name: string;
+//     color: string;
+//   };
+//   points: number;
+//   time: number;
+//   date: string;
+//   groupId?: string;
+// }
 
 const TodoList = () => {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);

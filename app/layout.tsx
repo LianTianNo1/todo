@@ -1,8 +1,9 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import localFont from "next/font/local";
 import "./globals.css";
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/sidebar';
+import Header from '@/components/layout/header';
 import { TodoProvider } from '@/contexts/TodoContext';
 import { LocaleProvider } from '@/contexts/LocaleContext';
 

@@ -66,6 +66,7 @@ const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocale] = useState<Locale>('zh');
 
+  // @ts-ignore
   const t = (key: string): string => {
     return translations[locale][key] || key;
   };
