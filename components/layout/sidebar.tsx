@@ -1,82 +1,169 @@
 "use client";
 
-import React from 'react';
-import { 
-  LayoutDashboard, 
-  CheckSquare, 
-  Inbox, 
-  Calendar, 
-  Trash2,
-  ChevronDown
-} from 'lucide-react';
+import React, { useState } from 'react';
+import { useTodo } from '@/contexts/TodoContext';
+import { ChevronDown, ChevronRight, Plus, Trash2, Calendar, Inbox, X } from 'lucide-react';
+import * as Dialog from '@radix-ui/react-dialog';
 
 const Sidebar = () => {
+  const { groups, selectedGroupId, selectGroup, toggleGroupExpanded, addGroup, deleteGroup, getGroupProgress } = useTodo();
+  const [showNewGroup, setShowNewGroup] = useState(false);
+  const [newGroupName, setNewGroupName] = useState('');
+  const [newGroupColor, setNewGroupColor] = useState('bg-[#5252FF]');
+
+  const colors = [
+    'bg-[#5252FF]',
+    'bg-[#FF7452]',
+    'bg-[#00C781]',
+    'bg-[#FFCA58]',
+    'bg-[#FF4F56]',
+    'bg-[#7B61FF]',
+    'bg-[#00739D]',
+    'bg-[#00873D]',
+  ];
+
+  const handleAddGroup = () => {
+    if (newGroupName.trim()) {
+      addGroup(newGroupName, newGroupColor);
+      setNewGroupName('');
+      setShowNewGroup(false);
+    }
+  };
+
   return (
-    <div className="h-full flex flex-col">
-      {/* 用户信息区 */}
-      <div className="h-16 px-4 flex items-center border-b">
+    <div className="w-[220px] h-full border-r bg-white p-4">
+      <div className="flex items-center gap-2 mb-6">
         <div className="w-8 h-8 rounded-full bg-gray-200" />
-        <div className="ml-3">
-          <h3 className="text-sm font-medium">我的空间</h3>
+        <div>
+          <div className="font-medium">我的空间</div>
+          <div className="text-sm text-gray-500">个人</div>
         </div>
       </div>
 
-      {/* 主导航 */}
-      <nav className="flex-1 px-2 py-4">
-        <div className="space-y-1">
-          <a href="#" className="flex items-center px-3 py-2 text-sm rounded-lg bg-[rgba(82,82,255,0.1)] text-[#5252FF]">
-            <CheckSquare className="w-5 h-5 mr-3" />
-            待办事项
-          </a>
-          <a href="#" className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100">
-            <Calendar className="w-5 h-5 mr-3" />
-            日历
-          </a>
-          <a href="#" className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-100">
-            <Trash2 className="w-5 h-5 mr-3" />
-            回收站
-          </a>
+      <div className="space-y-1 mb-6">
+        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#5252FF] bg-[rgba(82,82,255,0.1)] rounded-lg">
+          <Inbox className="w-4 h-4" />
+          待办事项
+        </button>
+        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
+          <Calendar className="w-4 h-4" />
+          日历
+        </button>
+      </div>
+
+      <div className="mb-2">
+        <div className="flex items-center justify-between px-3 py-2">
+          <span className="text-sm font-medium">任务进度</span>
+          <button
+            onClick={() => setShowNewGroup(true)}
+            className="p-1 hover:bg-gray-100 rounded"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* 任务进度区 */}
-        <div className="mt-8">
-          <div className="px-3 mb-2">
-            <h3 className="flex items-center justify-between text-sm font-medium text-gray-600">
-              任务进度
-              <ChevronDown className="w-4 h-4" />
-            </h3>
-          </div>
-          <div className="space-y-1">
-            <div className="px-3 py-2">
-              <div className="flex items-center justify-between text-sm mb-1">
-                <span>调试</span>
-                <span className="text-xs text-gray-500">70%</span>
-              </div>
-              <div className="h-1 bg-gray-100 rounded-full">
-                <div className="h-full w-[70%] bg-blue-500 rounded-full"></div>
+        <div className="space-y-1">
+          {groups.map((group) => (
+            <div key={group.id} className="px-3">
+              <div
+                onClick={() => selectGroup(group.id)}
+                className={`w-full flex items-center justify-between p-2 text-sm rounded-lg cursor-pointer ${
+                  selectedGroupId === group.id ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleGroupExpanded(group.id);
+                    }}
+                    className="p-1 hover:bg-gray-200 rounded"
+                  >
+                    {group.expanded ? (
+                      <ChevronDown className="w-4 h-4" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4" />
+                    )}
+                  </button>
+                  <span className={`w-2 h-2 rounded-full ${group.color}`} />
+                  <span>{group.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500">{getGroupProgress(group.id)}%</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteGroup(group.id);
+                    }}
+                    className="opacity-50 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="px-3 py-2">
-              <div className="flex items-center justify-between text-sm mb-1">
-                <span>编码</span>
-                <span className="text-xs text-gray-500">45%</span>
-              </div>
-              <div className="h-1 bg-gray-100 rounded-full">
-                <div className="h-full w-[45%] bg-blue-500 rounded-full"></div>
-              </div>
-            </div>
-            <div className="px-3 py-2">
-              <div className="flex items-center justify-between text-sm mb-1">
-                <span>设计</span>
-                <span className="text-xs text-gray-500">90%</span>
-              </div>
-              <div className="h-1 bg-gray-100 rounded-full">
-                <div className="h-full w-[90%] bg-blue-500 rounded-full"></div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
-      </nav>
+      </div>
+
+      <Dialog.Root open={showNewGroup} onOpenChange={setShowNewGroup}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+          <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 w-[400px]">
+            <div className="flex justify-between items-center mb-4">
+              <Dialog.Title className="text-lg font-semibold">新建分组</Dialog.Title>
+              <Dialog.Close className="p-1 hover:bg-gray-100 rounded">
+                <X className="w-5 h-5" />
+              </Dialog.Close>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">分组名称</label>
+              <input
+                type="text"
+                value={newGroupName}
+                onChange={(e) => setNewGroupName(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+                autoFocus
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">分组颜色</label>
+              <div className="flex gap-2">
+                {colors.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => setNewGroupColor(color)}
+                    className={`w-6 h-6 rounded-full ${color} ${
+                      newGroupColor === color ? 'ring-2 ring-offset-2 ring-blue-500' : ''
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowNewGroup(false)}
+                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                onClick={handleAddGroup}
+                className="px-4 py-2 text-sm bg-[#5252FF] text-white rounded-lg"
+                disabled={!newGroupName.trim()}
+              >
+                创建
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 };

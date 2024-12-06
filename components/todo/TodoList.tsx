@@ -17,12 +17,18 @@ interface Task {
   points: number;
   time: number;
   date: string;
+  groupId?: string;
 }
 
 const TodoList = () => {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
-  const { tasks, toggleTask } = useTodo();
+  const { tasks, toggleTask, selectedGroupId } = useTodo();
   const today = format(new Date(), 'dd MMMM');
+
+  // 根据选中的分组过滤任务
+  const filteredTasks = selectedGroupId
+    ? tasks.filter(task => task.groupId === selectedGroupId)
+    : tasks;
 
   return (
     <div className="p-6">
@@ -35,15 +41,12 @@ const TodoList = () => {
               列表
             </button>
             <button className="px-4 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full">
-              {/* Board */}
               面板
             </button>
             <button className="px-4 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full">
-              {/* Timeline */}
               时间线
             </button>
             <button className="px-4 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full">
-              {/* Calendar */}
               日历
             </button>
           </div>
@@ -58,7 +61,7 @@ const TodoList = () => {
 
       {/* 任务列表 */}
       <div className="space-y-2">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <div
             key={task.id}
             className="flex items-center h-14 px-4 border rounded-lg hover:bg-gray-50"
