@@ -48,7 +48,7 @@ interface TodoContextType {
 const defaultTags: Tag[] = [
   { id: '1', name: '开发', color: 'bg-[#5252FF]' },
   { id: '2', name: '会议', color: 'bg-[#FF7452]' },
-  { id: '3', name: '休息', color: 'bg-[#FFC300]' },
+  { id: '3', name: '休息', color: 'bg-[green]' },
 ];
 
 const defaultGroups: TaskGroup[] = [

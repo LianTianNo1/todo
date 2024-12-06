@@ -4,19 +4,25 @@ import React, { useState, useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Plus, X } from 'lucide-react';
 import { useTodo } from '@/contexts/TodoContext';
-import type { Tag } from '@/contexts/TodoContext';
+import type { Tag, Group } from '@/contexts/TodoContext';
 import { useLocale } from '@/contexts/LocaleContext';
 
 interface NewTaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialGroupId?: string | null;
 }
 
-const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ open, onOpenChange }) => {
+const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ 
+  open, 
+  onOpenChange,
+  initialGroupId = null
+}) => {
   const [title, setTitle] = useState('');
-  const { tags, addTask, addTag } = useTodo();
+  const { tags, groups, addTask, addTag } = useTodo();
   const { t } = useLocale();
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState(initialGroupId || groups[0]?.id || '');
   const [showNewTag, setShowNewTag] = useState(false);
   const [newTagName, setNewTagName] = useState('');
   const [newTagColor, setNewTagColor] = useState('bg-[#5252FF]');
@@ -28,10 +34,16 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ open, onOpenChange }) => 
     }
   }, [tags, selectedTag]);
 
+  useEffect(() => {
+    if (initialGroupId) {
+      setSelectedGroup(initialGroupId);
+    }
+  }, [initialGroupId]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim() && selectedTag) {
-      addTask(title, selectedTag);
+      addTask(title, selectedTag, selectedGroup);
       setTitle('');
       onOpenChange(false);
     }
@@ -104,6 +116,21 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({ open, onOpenChange }) => 
                   {t('addTag')}
                 </button>
               </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">分组</label>
+              <select
+                value={selectedGroup}
+                onChange={(e) => setSelectedGroup(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+              >
+                {groups.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {showNewTag && (
