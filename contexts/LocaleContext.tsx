@@ -14,6 +14,7 @@ const translations = {
   zh: {
     'today': '今天',
     'newTask': '新建任务',
+    'editTask': '编辑任务',
     'taskTitle': '任务标题',
     'tags': '标签',
     'addTag': '添加标签',
@@ -38,6 +39,7 @@ const translations = {
   en: {
     'today': 'Today',
     'newTask': 'New Task',
+    'editTask': 'Edit Task',
     'taskTitle': 'Task Title',
     'tags': 'Tags',
     'addTag': 'Add Tag',

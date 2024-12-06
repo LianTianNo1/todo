@@ -43,6 +43,7 @@ interface TodoContextType {
   selectGroup: (id: string) => void;
   toggleGroupExpanded: (id: string) => void;
   getGroupProgress: (groupId: string) => number;
+  updateTask: (updatedTask: Task) => void;
 }
 
 const defaultTags: Tag[] = [
@@ -192,6 +193,17 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
     return Math.round((completedTasks.length / groupTasks.length) * 100);
   };
 
+  const updateTask = (updatedTask: Task) => {
+    setTasks(prevTasks => prevTasks.map(task =>
+      task.id === updatedTask.id ? updatedTask : task
+    ));
+    // 保存到本地存储
+    const updatedTasks = tasks.map(task =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+    localStorage.setItem('todo-tasks', JSON.stringify(updatedTasks));
+  };
+
   return (
     <TodoContext.Provider value={{
       tasks,
@@ -207,7 +219,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
       deleteGroup,
       selectGroup,
       toggleGroupExpanded,
-      getGroupProgress
+      getGroupProgress,
+      updateTask
     }}>
       {children}
     </TodoContext.Provider>
