@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import localFont from "next/font/local";
 import "./globals.css";
 import Sidebar from '@/components/layout/sidebar';
-import Header from '@/components/layout/header';
 import { TodoProvider } from '@/contexts/TodoContext';
 import { LocaleProvider } from '@/contexts/LocaleContext';
 
@@ -35,7 +34,6 @@ export default function RootLayout({
             <div className="flex h-screen">
               <Sidebar />
               <main className="flex-1 overflow-auto">
-                {/* <Header /> */}
                 <div className="p-6">{children}</div>
               </main>
             </div>

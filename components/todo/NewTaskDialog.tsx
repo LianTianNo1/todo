@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, X } from "lucide-react";
 import { useTodo } from "@/contexts/TodoContext";
-import type { Tag, Group, Task } from "@/contexts/TodoContext";
+import type { Tag, Task } from "@/contexts/TodoContext";
 import { useLocale } from "@/contexts/LocaleContext";
 
 interface NewTaskDialogProps {

@@ -14,9 +14,8 @@ import {
   LineElement,
   Filler,
 } from 'chart.js';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { Doughnut, Line } from 'react-chartjs-2';
 import { useTodo } from '@/contexts/TodoContext';
-import { useLocale } from '@/contexts/LocaleContext';
 import dayjs from 'dayjs';
 import { ArrowUp, ArrowDown, Activity } from 'lucide-react';
 import { PointsAnalytics } from './PointsAnalytics';
@@ -36,7 +35,6 @@ ChartJS.register(
 
 const AnalyticsView = () => {
   const { tasks, tags } = useTodo();
-  const { t } = useLocale();
   const [tasksByTag, setTasksByTag] = useState<{ [key: string]: number }>({});
   const [tasksByStatus, setTasksByStatus] = useState<{ completed: number; pending: number }>({ completed: 0, pending: 0 });
   const [tasksByDay, setTasksByDay] = useState<{ [key: string]: number }>({});
@@ -107,17 +105,6 @@ const AnalyticsView = () => {
     ],
   };
 
-  // 完成状态图表配置
-  const statusChartData = {
-    labels: ['已完成', '进行中'],
-    datasets: [
-      {
-        data: [tasksByStatus.completed, tasksByStatus.pending],
-        backgroundColor: ['rgba(82, 255, 82, 0.8)', 'rgba(255, 82, 82, 0.8)'],
-        borderWidth: 0,
-      },
-    ],
-  };
 
   // 每日任务趋势图表配置
   const trendChartData = {

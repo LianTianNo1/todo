@@ -16,7 +16,6 @@ interface TimelineItemProps {
 }
 
 const TimelineItem: React.FC<TimelineItemProps> = ({ task, group, layout, isCompact }) => {
-  const side = layout === 'alternating' ? 'left' : 'right';
   
   // 格式化日期和时间
   const formatDateTime = (dateString: string | undefined) => {

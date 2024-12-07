@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Clock } from "lucide-react";
 import { Edit } from "lucide-react";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { useTodo } from "@/contexts/TodoContext";
 import NewTaskDialog from "./NewTaskDialog";
 import BoardView from "./BoardView";

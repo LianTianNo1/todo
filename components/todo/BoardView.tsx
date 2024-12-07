@@ -16,7 +16,7 @@ interface DisplaySettings {
 }
 
 const BoardView = () => {
-  const { tasks, groups, tags, addTask, toggleTask } = useTodo();
+  const { tasks, groups, tags, toggleTask } = useTodo();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);

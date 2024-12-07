@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { useTodo } from '@/contexts/TodoContext';
-import { ChevronDown, ChevronRight, Plus, Trash2, Calendar, Inbox, X, BarChart2 } from 'lucide-react';
+import { Plus, Trash2, Inbox, X, BarChart2 } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 import AnalyticsView from '../todo/analytics/AnalyticsView';
 
 const Sidebar = () => {
-  const { groups, selectedGroupId, selectGroup, toggleGroupExpanded, addGroup, deleteGroup, getGroupProgress } = useTodo();
+  const { groups, selectedGroupId, selectGroup, addGroup, deleteGroup, getGroupProgress } = useTodo();
   const [showNewGroup, setShowNewGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [newGroupColor, setNewGroupColor] = useState('bg-[#5252FF]');

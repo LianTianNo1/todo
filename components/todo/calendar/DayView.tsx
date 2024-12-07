@@ -3,7 +3,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { Task } from '@/contexts/TodoContext';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DayViewProps {
   currentDate: dayjs.Dayjs;

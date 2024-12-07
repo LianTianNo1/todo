@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dayjs from 'dayjs';
 import { useTodo } from '@/contexts/TodoContext';
-import { useLocale } from '@/contexts/LocaleContext';
 import MonthView from './MonthView';
 import WeekView from './WeekView';
 import DayView from './DayView';
@@ -15,7 +14,6 @@ const CalendarView = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const { tasks, updateTaskTime } = useTodo();
-  const { t } = useLocale();
 
   // 导航控制
   const goToToday = () => setCurrentDate(dayjs());
