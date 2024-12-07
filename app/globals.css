@@ -40,3 +40,31 @@ body {
     @apply border-gray-200;
   }
 }
+
+/* Custom scrollbar styles */
+
+/* For Webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6366F1; /* Indigo color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4F46E5; /* Darker indigo */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #F3F4F6; /* Light gray */
+  border-radius: 10px;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6366F1 #F3F4F6;
+}

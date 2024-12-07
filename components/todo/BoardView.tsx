@@ -464,7 +464,7 @@ const BoardView = () => {
     {showAnalytics && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl w-[90vw] max-w-[1200px] max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center justify-between p-4 border-b bg-white z-10">
             <h2 className="text-xl font-semibold">数据分析</h2>
             <button
               onClick={() => setShowAnalytics(false)}

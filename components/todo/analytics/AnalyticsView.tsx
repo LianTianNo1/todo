@@ -19,6 +19,7 @@ import { useTodo } from '@/contexts/TodoContext';
 import { useLocale } from '@/contexts/LocaleContext';
 import dayjs from 'dayjs';
 import { ArrowUp, ArrowDown, Activity } from 'lucide-react';
+import { PointsAnalytics } from './PointsAnalytics';
 
 ChartJS.register(
   CategoryScale,
@@ -40,6 +41,7 @@ const AnalyticsView = () => {
   const [tasksByStatus, setTasksByStatus] = useState<{ completed: number; pending: number }>({ completed: 0, pending: 0 });
   const [tasksByDay, setTasksByDay] = useState<{ [key: string]: number }>({});
   const [weeklyChange, setWeeklyChange] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<'overview' | 'points'>('overview');
 
   useEffect(() => {
     // 统计标签任务数量
@@ -232,89 +234,177 @@ const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* 图表区域 */}
-      <div className="grid grid-cols-1 gap-6">
-        {/* 近7天趋势 */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">近7天趋势</h3>
-          <div className="h-[400px]">
-            <Line data={trendChartData} options={{
-              ...chartOptions,
-              plugins: {
-                ...chartOptions.plugins,
-                legend: {
-                  display: true,
-                  position: 'top' as const,
-                  align: 'end' as const,
-                  labels: {
-                    usePointStyle: true,
-                    padding: 20,
-                    font: {
-                      size: 12,
-                    },
-                  },
-                },
-              },
-            }} />
-          </div>
-        </div>
+      {/* 标签切换 */}
+      <div className="flex space-x-4 mb-6">
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            activeTab === 'overview'
+              ? 'bg-blue-100 text-blue-700'
+              : 'text-gray-600 hover:bg-gray-100'
+          }`}
+          onClick={() => setActiveTab('overview')}
+        >
+          总览
+        </button>
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            activeTab === 'points'
+              ? 'bg-blue-100 text-blue-700'
+              : 'text-gray-600 hover:bg-gray-100'
+          }`}
+          onClick={() => setActiveTab('points')}
+        >
+          积分统计
+        </button>
+      </div>
 
-        {/* 标签分布 */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">标签分布</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* 饼图 */}
-            <div className="md:col-span-1">
-              <div className="h-[300px] flex items-center justify-center">
-                <div className="w-full max-w-[300px]">
-                  <Doughnut 
-                    data={tagChartData} 
-                    options={{
-                      ...chartOptions,
-                      cutout: '75%',
-                      plugins: {
-                        legend: {
-                          display: false,
-                        },
-                      },
-                    }} 
-                  />
+      {/* 内容区域 */}
+      {activeTab === 'overview' ? (
+        <>
+          {/* 数据概览卡片 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-4">
+                <Activity className="w-8 h-8 text-blue-500" />
+                <div>
+                  <h3 className="text-lg font-semibold">总任务</h3>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold">{tasks.length}</span>
+                    <span className="text-sm text-gray-500">
+                      {weeklyChange >= 0 ? (
+                        <span className="flex items-center text-green-500">
+                          <ArrowUp className="w-4 h-4" />
+                          {weeklyChange}%
+                        </span>
+                      ) : (
+                        <span className="flex items-center text-red-500">
+                          <ArrowDown className="w-4 h-4" />
+                          {Math.abs(weeklyChange)}%
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* 标签列表 */}
-            <div className="md:col-span-2 flex flex-col justify-center">
-              <div className="space-y-4">
-                {Object.entries(tasksByTag).map(([tag, count], index) => (
-                  <div key={tag} className="flex items-center gap-4">
-                    <div className="w-3 h-3 rounded-full" style={{ 
-                      backgroundColor: tagChartData.datasets[0].backgroundColor[index] 
-                    }} />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium">{tag}</span>
-                        <span className="text-gray-500">
-                          {count} 个任务 ({((count / tasks.length) * 100).toFixed(1)}%)
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-100 rounded-full h-1.5">
-                        <div 
-                          className="h-1.5 rounded-full transition-all duration-500"
-                          style={{ 
-                            width: `${(count / tasks.length) * 100}%`,
-                            backgroundColor: tagChartData.datasets[0].backgroundColor[index],
-                          }}
-                        />
-                      </div>
-                    </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-2">完成率</h3>
+              <div className="flex items-baseline">
+                <span className="text-3xl font-bold">
+                  {((tasksByStatus.completed / tasks.length) * 100).toFixed(1)}%
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-2">任务分布</h3>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <div className="flex justify-between mb-1">
+                    <span>开发</span>
+                    <span>{tasksByTag['开发'] || 0}</span>
                   </div>
-                ))}
+                  <div className="flex justify-between mb-1">
+                    <span>会议</span>
+                    <span>{tasksByTag['会议'] || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>休息</span>
+                    <span>{tasksByTag['休息'] || 0}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+
+          {/* 图表区域 */}
+          <div className="grid grid-cols-1 gap-6">
+            {/* 近7天趋势 */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-6">近7天趋势</h3>
+              <div className="h-[400px]">
+                <Line data={trendChartData} options={{
+                  ...chartOptions,
+                  plugins: {
+                    ...chartOptions.plugins,
+                    legend: {
+                      display: true,
+                      position: 'top' as const,
+                      align: 'end' as const,
+                      labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                          size: 12,
+                        },
+                      },
+                    },
+                  },
+                }} />
+              </div>
+            </div>
+
+            {/* 标签分布 */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-6">标签分布</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* 饼图 */}
+                <div className="md:col-span-1">
+                  <div className="h-[300px] flex items-center justify-center">
+                    <div className="w-full max-w-[300px]">
+                      <Doughnut 
+                        data={tagChartData} 
+                        options={{
+                          ...chartOptions,
+                          cutout: '75%',
+                          plugins: {
+                            legend: {
+                              display: false,
+                            },
+                          },
+                        }} 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 标签列表 */}
+                <div className="md:col-span-2 flex flex-col justify-center">
+                  <div className="space-y-4">
+                    {Object.entries(tasksByTag).map(([tag, count], index) => (
+                      <div key={tag} className="flex items-center gap-4">
+                        <div className="w-3 h-3 rounded-full" style={{ 
+                          backgroundColor: tagChartData.datasets[0].backgroundColor[index] 
+                        }} />
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-medium">{tag}</span>
+                            <span className="text-gray-500">
+                              {count} 个任务 ({((count / tasks.length) * 100).toFixed(1)}%)
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-100 rounded-full h-1.5">
+                            <div 
+                              className="h-1.5 rounded-full transition-all duration-500"
+                              style={{ 
+                                width: `${(count / tasks.length) * 100}%`,
+                                backgroundColor: tagChartData.datasets[0].backgroundColor[index],
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <PointsAnalytics tasks={tasks} />
+      )}
     </div>
   );
 };

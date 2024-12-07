@@ -87,16 +87,6 @@ const TodoList = () => {
             >
               时间线
             </button>
-            <button
-              onClick={() => setCurrentView("calendar")}
-              className={`px-4 py-1 text-sm rounded-full ${
-                currentView === "calendar"
-                  ? "bg-[rgba(82,82,255,0.1)] text-[#5252FF]"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              日历
-            </button>
           </div>
         </div>
         <button

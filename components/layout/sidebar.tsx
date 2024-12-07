@@ -34,22 +34,18 @@ const Sidebar = () => {
 
   return (
     <div className="w-[220px] h-full border-r bg-white p-4">
-      <div className="flex items-center gap-2 mb-6">
+      {/* <div className="flex items-center gap-2 mb-6">
         <div className="w-8 h-8 rounded-full bg-gray-200" />
         <div>
           <div className="font-medium">我的空间</div>
           <div className="text-sm text-gray-500">个人</div>
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-1 mb-6">
         <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#5252FF] bg-[rgba(82,82,255,0.1)] rounded-lg">
           <Inbox className="w-4 h-4" />
           待办事项
-        </button>
-        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-          <Calendar className="w-4 h-4" />
-          日历
         </button>
         <button 
           onClick={() => setShowAnalytics(true)}
@@ -81,7 +77,7 @@ const Sidebar = () => {
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <button
+                  {/* <button
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleGroupExpanded(group.id);
@@ -93,7 +89,7 @@ const Sidebar = () => {
                     ) : (
                       <ChevronRight className="w-4 h-4" />
                     )}
-                  </button>
+                  </button> */}
                   <span className={`w-2 h-2 rounded-full ${group.color}`} />
                   <span>{group.name}</span>
                 </div>
