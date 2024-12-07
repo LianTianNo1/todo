@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
+import dayjs from 'dayjs'; // Import dayjs library
 
 export interface Tag {
   id: string;
@@ -44,6 +45,7 @@ interface TodoContextType {
   toggleGroupExpanded: (id: string) => void;
   getGroupProgress: (groupId: string) => number;
   updateTask: (updatedTask: Task) => void;
+  updateTaskTime: (taskId: string, date: string) => void;
 }
 
 const defaultTags: Tag[] = [
@@ -204,6 +206,41 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('todo-tasks', JSON.stringify(updatedTasks));
   };
 
+  const updateTaskTime = (taskId: string, date: string) => {
+    try {
+      // 验证日期格式
+      const validDate = dayjs(date);
+      if (!validDate.isValid()) {
+        throw new Error('Invalid date format');
+      }
+
+      console.log('Updating task time:', {
+        taskId,
+        date,
+        parsedDate: validDate.format('YYYY-MM-DD HH:mm:ss')
+      });
+
+      setTasks(prevTasks => {
+        const updatedTasks = prevTasks.map(task =>
+          task.id === taskId
+            ? { ...task, date: validDate.format('YYYY-MM-DD HH:mm:ss') }
+            : task
+        );
+
+        // 保存前验证所有任务的日期
+        const validTasks = updatedTasks.every(task => dayjs(task.date).isValid());
+        if (!validTasks) {
+          throw new Error('Invalid task dates detected');
+        }
+
+        localStorage.setItem('todo-tasks', JSON.stringify(updatedTasks));
+        return updatedTasks;
+      });
+    } catch (error) {
+      console.error('Error updating task time:', error);
+    }
+  };
+
   return (
     <TodoContext.Provider value={{
       tasks,
@@ -220,7 +257,8 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
       selectGroup,
       toggleGroupExpanded,
       getGroupProgress,
-      updateTask
+      updateTask,
+      updateTaskTime,
     }}>
       {children}
     </TodoContext.Provider>

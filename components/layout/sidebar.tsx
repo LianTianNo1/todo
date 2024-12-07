@@ -2,14 +2,16 @@
 
 import React, { useState } from 'react';
 import { useTodo } from '@/contexts/TodoContext';
-import { ChevronDown, ChevronRight, Plus, Trash2, Calendar, Inbox, X } from 'lucide-react';
+import { ChevronDown, ChevronRight, Plus, Trash2, Calendar, Inbox, X, BarChart2 } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
+import AnalyticsView from '../todo/analytics/AnalyticsView';
 
 const Sidebar = () => {
   const { groups, selectedGroupId, selectGroup, toggleGroupExpanded, addGroup, deleteGroup, getGroupProgress } = useTodo();
   const [showNewGroup, setShowNewGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [newGroupColor, setNewGroupColor] = useState('bg-[#5252FF]');
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const colors = [
     'bg-[#5252FF]',
@@ -48,6 +50,13 @@ const Sidebar = () => {
         <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
           <Calendar className="w-4 h-4" />
           日历
+        </button>
+        <button 
+          onClick={() => setShowAnalytics(true)}
+          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+        >
+          <BarChart2 className="w-4 h-4" />
+          数据分析
         </button>
       </div>
 
@@ -164,6 +173,24 @@ const Sidebar = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      {/* 数据分析弹窗 */}
+      {showAnalytics && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl w-[90vw] max-w-[1200px] max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-xl font-semibold">数据分析</h2>
+              <button
+                onClick={() => setShowAnalytics(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <AnalyticsView />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

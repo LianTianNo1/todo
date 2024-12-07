@@ -127,7 +127,7 @@ const TodoList = () => {
               {editTitle === task.id ? (
                 <input
                   type="text"
-                  className="ml-3 flex-1"
+                  className="flex-1 px-3 py-2 border rounded-lg"
                   value={task.title}
                   onChange={(e) => handleTitleChange(e, task)}
                   onBlur={() => handleTitleBlur(task)}

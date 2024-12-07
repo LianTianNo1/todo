@@ -83,9 +83,8 @@ const NewTaskDialog: React.FC<NewTaskDialogProps> = ({
       });
     }
 
+    // 只重置必要的字段，保留标签和分组的选择
     setTitle("");
-    setSelectedTag(null);
-    setSelectedGroup("");
     setTime("30");
     setPoints("1");
     onOpenChange(false);
