@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // 静态导出需要这个配置
   },
+  basePath: '/todo',  // 添加这行，匹配 GitHub Pages 路径
+  assetPrefix: '/todo/',  // 添加这行，确保资源正确加载
 };
 
 export default nextConfig;
