@@ -36,7 +36,7 @@ jobs:
       - name: Install Dependencies
         run: |
           echo "Installing dependencies..."
-          npm install
+          npm install --force --legacy-peer-deps
           echo "Dependencies installed"
           npm list --depth=0
 
