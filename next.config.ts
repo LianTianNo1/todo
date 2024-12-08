@@ -11,8 +11,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // 静态导出需要这个配置
   },
-  basePath: '/todo',  // 添加这行，匹配 GitHub Pages 路径
-  assetPrefix: '/todo/',  // 添加这行，确保资源正确加载
+  // 确保这些设置正确匹配 GitHub Pages 的路径
+  basePath: process.env.NODE_ENV === 'production' ? '/todo' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/todo/' : '',
+  trailingSlash: true, // 添加这个确保 URL 以斜杠结尾
 };
 
 export default nextConfig;
