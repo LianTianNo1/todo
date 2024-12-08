@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo.llllife - 现代化的待办事项管理应用
 
-## Getting Started
+## 项目简介
 
-First, run the development server:
+Todo.llllife 是一个简洁优雅的待办事项管理应用，专注于提供流畅的任务管理体验。无论是工作计划、学习目标还是生活安排，都能帮助你井井有条地完成每一项任务。
 
+## 在线体验
+
+立即体验：[todo.llllife.cn](http://todo.llllife.cn)
+
+## 核心特性
+
+- 直观的任务管理界面
+- 优雅的拖拽排序功能
+- 任务完成度统计和图表展示
+
+## 技术栈
+
+- **框架**: [Next.js 15](https://nextjs.org/)
+- **语言**: [TypeScript](https://www.typescriptlang.org/)
+- **样式**: [Tailwind CSS](https://tailwindcss.com/)
+- **组件**: 
+  - [@radix-ui](https://www.radix-ui.com/) - 无障碍性组件
+  - [@hello-pangea/dnd](https://github.com/hello-pangea/dnd) - 拖拽功能
+  - [Chart.js](https://www.chartjs.org/) - 数据可视化
+- **日期处理**: [date-fns](https://date-fns.org/) & [dayjs](https://day.js.org/)
+- **图标**: [Lucide React](https://lucide.dev/)
+
+## 本地开发
+
+1. 克隆项目
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd mytodo-wrap
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 安装依赖
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. 启动开发服务器
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. 打开浏览器访问 [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+## 构建部署
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 构建项目
+npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 启动生产服务
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 参与贡献
 
-## Deploy on Vercel
+欢迎提交 Issue 和 Pull Request！让我们一起把这个项目变得更好。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 开源协议
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT License](LICENSE)
